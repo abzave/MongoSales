@@ -3,7 +3,7 @@ import { FormControl, InputGroup } from 'react-bootstrap';
 
 export default class CodeInput extends React.Component {
 
-  formatCode(value) {
+  formatCode = (value) => {
     let code = this.props.code;
     const padding = this.props.length;
     const fill = this.props.fill;

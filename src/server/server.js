@@ -1,25 +1,22 @@
 import express from 'express';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import App from '../components/App';
+import mongoose from 'mongoose';
+
+require("dotenv/config");
 
 const server = express();
+const mainRoute = require('./routes/main-page');
+const salesRoute = require('./routes/sales');
+
 server.use(express.static('dist'));
+server.use(express.json());
+server.use("/", mainRoute);
+server.use("/sales", salesRoute);
 
-server.get('/', (request, response) => {
-  const initialMarkup = ReactDOMServer.renderToString(<App/>);
-
-  response.send(`
-    <html>
-      <head>
-        <title>Ventas</title>
-      </head>
-      <body>
-        <div id="mountnode">${initialMarkup}</div>
-        <script src="/main.js"></script>
-      </body>
-    </html>
-  `);
-});
+mongoose.connect(process.env.DB_CONNECTION,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 
 server.listen(4242);
